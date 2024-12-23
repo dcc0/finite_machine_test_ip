@@ -24,6 +24,7 @@ initial_state =test(ip);
 if (test(ip) == 1) {
 system("beep -f 900 -l 500; beep -f 700 -l 1000; beep -f 800 -l 500; beep -f 800 -l 500; beep -f 900 -l 1000;");
 printf("CETb ECTb!");
+ /*Чтобы сделать  "бесконечную" работу, убрать break.*/
 break;
 }
 else
