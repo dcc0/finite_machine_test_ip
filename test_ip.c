@@ -41,16 +41,19 @@ if (test(ip)==0)
 system("beep -f 1200 -l 2000");
 }
 
-int main (int argc, char *argv[]) {
-int initial_state = 0;
-char ip[100]="ping -c 1 ";
-char * stable=argv[2];
 
-if (argc < 2) {
+int main (int argc, char *argv[]) {
+
+	if (argc < 2) {
 printf("Введите адрес  вторым параметром\n\r");
 printf("Третий параметр - 1 - бесконечное выполнение\n\r");
 return 0;
 }
+
+int initial_state = 0;
+char ip[100]="ping -c 1 ";
+char * stable=argv[2];
+
 /*Проверим доступность ресурса. Переменная initial_state хранит начальное состояние*/
 sprintf(ip, "%s%s", ip, argv[1]);
 start (ip);
