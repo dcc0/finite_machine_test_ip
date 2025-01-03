@@ -44,11 +44,11 @@ int main (int argc, char *argv[]) {
     if (argc < 2) {
 printf("Введите адрес  вторым параметром\n\r");
 printf("Третий параметр - 1 - бесконечное выполнение\n\r");
-printf("test_ip.comb  h - справка\n\r");
+printf("test_ip.comb  -h - справка\n\r");
 return 0;
 }
 /*Справка*/
-  char *sprav1 = "h";
+  char *sprav1 = "-h";
   char *sprav2 = argv[1];
   int ret;
   ret = strncmp(sprav1, sprav2, 8);
