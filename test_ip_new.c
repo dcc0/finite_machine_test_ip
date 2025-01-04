@@ -56,6 +56,10 @@ int main(int argc, char * argv[]) {
   for (i = 0; i != max_len; i++) {
     if (argv[1][i] == ' ')
       amount_of_spaces++;
+    if (argv[1][i] == '&') {
+      printf("Недопустимый символ \n\r");
+      return 0;
+    }
   }
 
   /*Если пробелов больше 2, то завершим программу*/
