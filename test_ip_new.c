@@ -14,17 +14,13 @@ Email: ivangavr777@gmail.com, dcc0@mail.ru, mol0t@list.ru. 
 #include <string.h>
 
 int main(int argc, char * argv[]) {
-  /*Переменные для справки*/
-  char * sprav1;
-  char * sprav2;
-  int ret;
-  /*Переменные основного кода*/
   int i = 0;
+  /*Переменные основного кода*/
   int amount_of_spaces = 0;
   /*Начальное состояние автомата*/
   int initial_state = 0;
   /*Пинг*/
-  char ip[10] = "ping -c 1 ";
+  char ip[100] = "ping -c 1 ";
   /*Переменная для бесконечного выполнения*/
   char * stable;
   char ip_test[100];
@@ -39,13 +35,10 @@ int main(int argc, char * argv[]) {
     return 0;
   }
 
-  /*Справка*/
-  sprav1 = "-h";
-  sprav2 = argv[1];
-  ret = strncmp(sprav1, sprav2, 8);
+
 
   /*Вывод справки*/
-  if (ret == 0) {
+  if ( strncmp("-h", argv[1], 8) == 0) {
     printf("Cправка\n\r");
     printf("Использование: \n\r  ip_test.comb [ip, или адрес сайта]\n\r");
     printf("Если сайт или ip доступен, программа уведомит звуком и завершится\n\r");
@@ -67,12 +60,12 @@ int main(int argc, char * argv[]) {
       printf("Недопустимый символ \n\r");
       return 0;
     }
-    if (argv[1][i] == '|') {
+     if (argv[1][i] == '|') {
       printf("Недопустимый символ \n\r");
       return 0;
     }
 
-  }
+ }
 
   /*Если пробелов больше 2, то завершим программу*/
   if (amount_of_spaces > 3) {
