@@ -22,7 +22,7 @@ int main(int argc, char * argv[]) {
   /*Пинг*/
   char ip[100] = "ping -c 1 ";
   /*Переменная для бесконечного выполнения*/
-  char * stable;
+  char * inifinite_run;
   char ip_test[100];
   char * resource;
   int max_len;
@@ -48,11 +48,11 @@ int main(int argc, char * argv[]) {
   }
 
   /*Аргументы*/
-  stable = argv[2];
+  inifinite_run = argv[2];
   resource = argv[1];
   max_len = sizeof ip_test;
 
-    /*Проверим ввод. Найдем количество пробелов. Проверим на символы | &*/
+ /*Проверим ввод. Найдем количество пробелов. Проверим на символы | &*/
   for (i = 0; i != max_len; i++) {
     if (argv[1][i] == ' ')
       amount_of_spaces++;
@@ -79,7 +79,7 @@ int main(int argc, char * argv[]) {
   /*Проверим доступность ресурса. Переменная initial_state хранит начальное состояние*/
   start(ip_test);
   /*Ожидание события*/
-  wait_event(initial_state, ip_test, stable);
+  wait_event(initial_state, ip_test, inifinite_run);
 }
 
 /*ФУНКЦИЯ: Первый запуск*/
@@ -98,7 +98,7 @@ int test(char * ip_test) {
 }
 
 /*ФУНКЦИЯ: результат и оповещение*/
-void wait_event(int initial_state, char * ip_test, char * stable) {
+void wait_event(int initial_state, char * ip_test, char * inifinite_run) {
   while (1) {
     sleep(5);
     test(ip_test);
@@ -109,7 +109,7 @@ void wait_event(int initial_state, char * ip_test, char * stable) {
       if (test(ip_test) == 1) {
         system("beep -f 900 -l 500; beep -f 700 -l 1000; beep -f 800 -l 500; beep -f 800 -l 500; beep -f 900 -l 1000;");
         printf("CETb ECTb!");
-        if (stable == 0)
+        if (inifinite_run == 0)
           break;
       } else {
         system("beep -f 1200 -l 2000");
