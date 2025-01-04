@@ -52,7 +52,7 @@ int main(int argc, char * argv[]) {
   resource = argv[1];
   max_len = sizeof ip_test;
 
-  /*Найдем количество проблелов*/
+    /*Проверим ввод. Найдем количество пробелов. Проверим на символы | &*/
   for (i = 0; i != max_len; i++) {
     if (argv[1][i] == ' ')
       amount_of_spaces++;
