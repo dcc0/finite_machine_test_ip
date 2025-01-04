@@ -10,8 +10,21 @@
 #include <string.h>
 
 int main(int argc, char * argv[]) {
+  /*Переменные для справки*/
+  char * sprav1;
+  char * sprav2;
+  int ret;
+  /*Переменные основного кода*/
+  int i = 0;
+  int amount_of_spaces = 0;
+  int initial_state = 0;
+  char ip[10] = "ping -c 1 ";
+  char * stable;
+  char ip_test[100];
+  char * resource;
+  int max_len;
 
-  /*Минимальное количество аргументов*/
+  /*Проверим минимальное количество аргументов.*/
   if (argc < 2) {
     printf("Введите адрес  вторым параметром\n\r");
     printf("Третий параметр - 1 - бесконечное выполнение\n\r");
@@ -20,9 +33,8 @@ int main(int argc, char * argv[]) {
   }
 
   /*Справка*/
-  char * sprav1 = "-h";
-  char * sprav2 = argv[1];
-  int ret;
+  sprav1 = "-h";
+  sprav2 = argv[1];
   ret = strncmp(sprav1, sprav2, 8);
 
   /*Вывод справки*/
@@ -34,21 +46,18 @@ int main(int argc, char * argv[]) {
     printf("ip_test.comb [ip или адрес сайта] [1] - задаст бесконечную проверку сайта в фоне \n\r");
     return 0;
   }
-  int i = 0;
-  int amount_of_spaces = 0;
-  int initial_state = 0;
-  char ip[10] = "ping -c 1 ";
-  char * stable = argv[2];
-  char ip_test[100];
-  char * resource = argv[1];
-  int max_len = sizeof ip_test;
+
+  /*Аргументы*/
+  stable = argv[2];
+  resource = argv[1];
+  max_len = sizeof ip_test;
 
   /*Найдем количество проблелов*/
   for (i = 0; i != max_len; i++) {
     if (argv[1][i] == ' ')
       amount_of_spaces++;
   }
- 
+
   /*Если пробелов больше 2, то завершим программу*/
   if (amount_of_spaces > 3) {
     printf("В строке есть лишние пробелы!");
@@ -98,4 +107,3 @@ void wait_event(int initial_state, char * ip_test, char * stable) {
     }
   }
 }
-
