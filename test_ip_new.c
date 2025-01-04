@@ -21,8 +21,11 @@ int main(int argc, char * argv[]) {
   /*Переменные основного кода*/
   int i = 0;
   int amount_of_spaces = 0;
+  /*Начальное состояние автомата*/
   int initial_state = 0;
+  /*Пинг*/
   char ip[10] = "ping -c 1 ";
+  /*Переменная для бесконечного выполнения*/
   char * stable;
   char ip_test[100];
   char * resource;
@@ -64,6 +67,11 @@ int main(int argc, char * argv[]) {
       printf("Недопустимый символ \n\r");
       return 0;
     }
+    if (argv[1][i] == '|') {
+      printf("Недопустимый символ \n\r");
+      return 0;
+    }
+
   }
 
   /*Если пробелов больше 2, то завершим программу*/
@@ -72,11 +80,12 @@ int main(int argc, char * argv[]) {
     return 0;
   }
 
-  /*Склеим строку аргументы*/
+  /*Склеим строку */
   snprintf(ip_test, max_len, "%s%s", ip, resource);
 
   /*Проверим доступность ресурса. Переменная initial_state хранит начальное состояние*/
   start(ip_test);
+  /*Ожидание события*/
   wait_event(initial_state, ip_test, stable);
 }
 
