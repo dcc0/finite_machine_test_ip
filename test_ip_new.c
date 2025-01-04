@@ -34,7 +34,7 @@ int main(int argc, char * argv[]) {
     printf("ip_test.comb [ip или адрес сайта] [1] - задаст бесконечную проверку сайта в фоне \n\r");
     return 0;
   }
-  int i;
+  int i = 0;
   int amount_of_spaces = 0;
   int initial_state = 0;
   char ip[10] = "ping -c 1 ";
@@ -43,19 +43,20 @@ int main(int argc, char * argv[]) {
   char * resource = argv[1];
   int max_len = sizeof ip_test;
 
-  /*Склеим строку аргументы*/
-  snprintf(ip_test, max_len, "%s%s", ip, resource);
-
   /*Найдем количество проблелов*/
   for (i = 0; i != max_len; i++) {
-    if (ip_test[i] == ' ')
+    if (argv[1][i] == ' ')
       amount_of_spaces++;
   }
+  printf("%d", amount_of_spaces);
   /*Если пробелов больше 2, то завершим программу*/
-  if (ip_test[i] > 2) {
+  if (amount_of_spaces > 3) {
     printf("В строке есть лишние пробелы!");
     return 0;
   }
+
+  /*Склеим строку аргументы*/
+  snprintf(ip_test, max_len, "%s%s", ip, resource);
 
   /*Проверим доступность ресурса. Переменная initial_state хранит начальное состояние*/
   start(ip_test);
@@ -97,3 +98,4 @@ void wait_event(int initial_state, char * ip_test, char * stable) {
     }
   }
 }
+
