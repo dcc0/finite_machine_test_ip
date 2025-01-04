@@ -48,7 +48,7 @@ int main(int argc, char * argv[]) {
     if (argv[1][i] == ' ')
       amount_of_spaces++;
   }
-  printf("%d", amount_of_spaces);
+ 
   /*Если пробелов больше 2, то завершим программу*/
   if (amount_of_spaces > 3) {
     printf("В строке есть лишние пробелы!");
