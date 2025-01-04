@@ -76,13 +76,13 @@ int main(int argc, char * argv[]) {
   wait_event(initial_state, ip_test, stable);
 }
 
-/*Первый запуск*/
+/*ФУНКЦИЯ: Первый запуск*/
 void start(char * ip_test) {
   if (test(ip_test) == 0)
     system("beep -f 1200 -l 2000");
 }
 
-/*Определение состояния*/
+/*ФУНКЦИЯ: Определение состояния*/
 int test(char * ip_test) {
   if (system(ip_test) == 0) {
     return 1;
@@ -91,7 +91,7 @@ int test(char * ip_test) {
   }
 }
 
-/*Результат и оповещение*/
+/*ФУНКЦИЯ: результат и оповещение*/
 void wait_event(int initial_state, char * ip_test, char * stable) {
   while (1) {
     sleep(5);
