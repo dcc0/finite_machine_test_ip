@@ -17,6 +17,7 @@ Email: ivangavr777@gmail.com, dcc0@mail.ru, mol0t@list.ru. 
 #include <time.h>
 
 int main(int argc, char * argv[]) {
+/*===ПЕРЕМЕННЫЕ===*/
    /*Переменная i для цикла, в котором находим количество пробелов*/
   int i = 0;
   /*Переменные основного кода*/
@@ -26,28 +27,31 @@ int main(int argc, char * argv[]) {
   /*Пинг*/
   char ip[100] = "ping -c 1 ";
   /*Переменная для бесконечного выполнения*/
-  char * inifinite_run;
+  int inifinite_run = 0;
   /*В этой переменной будет ping и ресурс*/
   char ip_test[100];
   char * resource;
   int max_len;
   /*Интервал проверки сайта/ip*/
-  int sleep_interval;
+  int sleep_interval = 5;
+
+/*===ПРОВЕРКИ ВВОДА===*/
+  /*Бесконечное выполнение - 1 */
+  if (argc > 2)
+  inifinite_run = 1;
 
   /*Проверим минимальное количество аргументов.*/
   if (argc < 2) {
     printf("Введите адрес  вторым параметром\n\r");
     printf("Третий параметр - 1 - бесконечное выполнение\n\r");
     printf("test_ip.comb  -h - справка\n\r");
-    /*Интервал проверки сайта или ip. 5 секунд по умолчанию*/
-    sleep_interval  = 5;
     return 0;
   }
 
-/*Проверим интервал*/
-  if (argc > 2) {
-	sleep_interval = atoi(argv[3]);
-	}
+/*Проверим интервал и конвертир	уем его в целое*/
+  if (argc > 3)
+    sleep_interval = atoi(argv[3]);
+
 
   /*Вывод справки*/
   if ( strncmp("-h", argv[1], 8) == 0) {
@@ -61,8 +65,7 @@ int main(int argc, char * argv[]) {
   }
 
   /*Аргументы*/
-  /*Бесконечное выполнение*/
-  inifinite_run = argv[2];
+
   /*Ресурс, который проверяем*/
   resource = argv[1];
   max_len = sizeof ip_test;
@@ -88,6 +91,7 @@ int main(int argc, char * argv[]) {
     return 0;
   }
 
+/*===ГЛАВНАЯ ЧАСТЬ===*/
   /*Склеим строку. Здесь название команды ping и имя ресурса или ip*/
   snprintf(ip_test, max_len, "%s%s", ip, resource);
 
@@ -96,6 +100,8 @@ int main(int argc, char * argv[]) {
   /*Ожидание события*/
   wait_event(initial_state, ip_test, inifinite_run, sleep_interval);
 }
+
+/*===ФУНКЦИИ===*/
 
 /*ФУНКЦИЯ: Первый запуск*/
 void start(char * ip_test) {
@@ -113,18 +119,22 @@ int test(char * ip_test) {
 }
 
 /*ФУНКЦИЯ: результат и оповещение*/
-void wait_event(int initial_state, char * ip_test, char * inifinite_run, int sleep_interval) {
+void wait_event(int initial_state, char * ip_test, int  inifinite_run, int  sleep_interval) {
+
 /*Добавим дату. Структура с датой*/
 time_t mytime = time(NULL);
 struct tm *now = localtime(&mytime);
 char str_month[20];
 char str_day[20];
-/*Форматирование даты: номера месяца и номера дня*/
-strftime(str_month, sizeof(str_month), "%m", now);
-strftime(str_day, sizeof(str_day), "%d", now);
 /*Переменные месяца и дня для конвертации в целые*/
 int s_month;
 int s_day;
+/*Форматирование даты: номера месяца и номера дня*/
+strftime(str_month, sizeof(str_month), "%m", now);
+strftime(str_day, sizeof(str_day), "%d", now);
+/*Конвертируем номер дня и месяца в целые*/
+s_day=atoi(str_day);
+s_month=atoi(str_month);
 
   while (1) {
     sleep(sleep_interval);
@@ -134,19 +144,16 @@ int s_day;
     if (initial_state != test(ip_test)) {
       initial_state = test(ip_test);
       if (test(ip_test) == 1) {
-		/*Конвертируем номер дня и месяца в целые*/
-		s_day=atoi(str_day);
-		s_month=atoi(str_month);
-		/*Проверим не январь ли нынче?! :)*/
-		  if(s_day > 1 && s_day < 20 && s_month == 1) {
-	     /*Если январь до 20, то играем эту мелодию*/
+	/*Проверим не январь ли нынче?! :)*/
+	 if(s_day > 1 && s_day < 20 && s_month == 1) {
+	/*Если январь до 20, то играем эту мелодию*/
         system("beep -f 523 -l 400;beep -f 880 -l 400;beep -f 880 -l 400;beep -f 783 -l 400;beep -f 880 -l 400;beep -f 698 -l 400;beep -f 523 -l 400;beep -f 523 -l 500;beep -f 523 -l 400;beep -f 880 -l 400;beep -f 880 -l 400;beep -f 932 -l 400;beep -f 783 -l 600;beep -f 1046 -l 600;beep -f 1046 -l 500;beep -f 587 -l 400;beep -f 587 -l 400;beep -f 932 -l 400;beep -f 932 -l 400;beep -f 880 -l 400;beep -f 783 -l 400;beep -f 698 -l 400;beep -f 698 -l 400;beep -f 880 -l 400;beep -f 880 -l 400;beep -f 783 -l 400;beep -f 880 -l 600;beep -f 698 -l 500;");
 	   } else {
 	    system("beep -f 900 -l 500; beep -f 700 -l 1000; beep -f 800 -l 500; beep -f 800 -l 500; beep -f 900 -l 1000;");
 		}
         printf("CETb ECTb!");
         /*Проверим не задан ли второй аргумент. Если не задан, то завершим программу*/
-        if (inifinite_run == 0)
+        if (inifinite_run  == 0)
           break;
       } else {
         system("beep -f 1200 -l 2000");
