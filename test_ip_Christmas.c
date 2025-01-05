@@ -1,7 +1,7 @@
 /*Конечный автомат с двумя состояниями. Работает в фоне, уведомляет о разрыве сети.*/
-/*Если сети нет, запускаем программу с пингом сайта или ip, получаем  однократный звуковой сигнал,о том
+/*Принцип работы: если сети нет, запускаем программу с пингом сайта или ip, получаем  однократный звуковой сигнал,о том
 что сети нет. Когда сеть будет восстановлена, получаем однократный звуковой сигнал другой тональности
-и завершаем программу
+и завершаем программу.
 Автор: Ivan Gavryushin (aka dcc0, MoL0T, Black_Ru, AnonymUser, iv777). MSK. Butovo. 2009-2025
 Email: ivangavr777@gmail.com, dcc0@mail.ru, mol0t@list.ru. 
 Спасибо Тимуру Гатину за идею.
@@ -17,6 +17,7 @@ Email: ivangavr777@gmail.com, dcc0@mail.ru, mol0t@list.ru. 
 #include <time.h>
 
 int main(int argc, char * argv[]) {
+   /*Переменная i для цикла, в котором находим количество пробелов*/
   int i = 0;
   /*Переменные основного кода*/
   int amount_of_spaces = 0;
@@ -26,6 +27,7 @@ int main(int argc, char * argv[]) {
   char ip[100] = "ping -c 1 ";
   /*Переменная для бесконечного выполнения*/
   char * inifinite_run;
+  /*В этой переменной будет ping и ресурс*/
   char ip_test[100];
   char * resource;
   int max_len;
@@ -41,6 +43,7 @@ int main(int argc, char * argv[]) {
     sleep_interval  = 5;
     return 0;
   }
+
 /*Проверим интервал*/
   if (argc > 2) {
 	sleep_interval = atoi(argv[3]);
@@ -58,7 +61,9 @@ int main(int argc, char * argv[]) {
   }
 
   /*Аргументы*/
+  /*Бесконечное выполнение*/
   inifinite_run = argv[2];
+  /*Ресурс, который проверяем*/
   resource = argv[1];
   max_len = sizeof ip_test;
 
@@ -83,10 +88,10 @@ int main(int argc, char * argv[]) {
     return 0;
   }
 
-  /*Склеим строку */
+  /*Склеим строку. Здесь название команды ping и имя ресурса или ip*/
   snprintf(ip_test, max_len, "%s%s", ip, resource);
 
-  /*Проверим доступность ресурса. Переменная initial_state хранит начальное состояние*/
+  /*Проверим доступность ресурса (первый запуск). Переменная initial_state хранит начальное состояние*/
   start(ip_test);
   /*Ожидание события*/
   wait_event(initial_state, ip_test, inifinite_run, sleep_interval);
@@ -109,11 +114,12 @@ int test(char * ip_test) {
 
 /*ФУНКЦИЯ: результат и оповещение*/
 void wait_event(int initial_state, char * ip_test, char * inifinite_run, int sleep_interval) {
-/*Добавим дату*/
+/*Добавим дату. Структура с датой*/
 time_t mytime = time(NULL);
 struct tm *now = localtime(&mytime);
 char str_month[20];
 char str_day[20];
+/*Форматирование даты: номера месяца и номера дня*/
 strftime(str_month, sizeof(str_month), "%m", now);
 strftime(str_day, sizeof(str_day), "%d", now);
 /*Переменные месяца и дня для конвертации в целые*/
@@ -133,11 +139,13 @@ int s_day;
 		s_month=atoi(str_month);
 		/*Проверим не январь ли нынче?! :)*/
 		  if(s_day > 1 && s_day < 20 && s_month == 1) {
+	     /*Если январь до 20, то играем эту мелодию*/
         system("beep -f 523 -l 400;beep -f 880 -l 400;beep -f 880 -l 400;beep -f 783 -l 400;beep -f 880 -l 400;beep -f 698 -l 400;beep -f 523 -l 400;beep -f 523 -l 500;beep -f 523 -l 400;beep -f 880 -l 400;beep -f 880 -l 400;beep -f 932 -l 400;beep -f 783 -l 600;beep -f 1046 -l 600;beep -f 1046 -l 500;beep -f 587 -l 400;beep -f 587 -l 400;beep -f 932 -l 400;beep -f 932 -l 400;beep -f 880 -l 400;beep -f 783 -l 400;beep -f 698 -l 400;beep -f 698 -l 400;beep -f 880 -l 400;beep -f 880 -l 400;beep -f 783 -l 400;beep -f 880 -l 600;beep -f 698 -l 500;");
 	   } else {
 	    system("beep -f 900 -l 500; beep -f 700 -l 1000; beep -f 800 -l 500; beep -f 800 -l 500; beep -f 900 -l 1000;");
 		}
         printf("CETb ECTb!");
+        /*Проверим не задан ли второй аргумент. Если не задан, то завершим программу*/
         if (inifinite_run == 0)
           break;
       } else {
