@@ -26,16 +26,22 @@ int main(int argc, char * argv[]) {
   char ip_test[100];
   char * resource;
   int max_len;
+  /*Интервал проверки сайта/ip*/
+  int sleep_interval;
 
   /*Проверим минимальное количество аргументов.*/
   if (argc < 2) {
     printf("Введите адрес  вторым параметром\n\r");
     printf("Третий параметр - 1 - бесконечное выполнение\n\r");
     printf("test_ip.comb  -h - справка\n\r");
+    /*Интервал проверки сайта или ip. 5 секунд по умолчанию*/
+    sleep_interval  = 5;
     return 0;
   }
-
-
+/*Проверим интервал*/
+  if (argc > 2) {
+	sleep_interval = atoi(argv[3]);
+	}
 
   /*Вывод справки*/
   if ( strncmp("-h", argv[1], 8) == 0) {
@@ -44,6 +50,7 @@ int main(int argc, char * argv[]) {
     printf("Если сайт или ip доступен, программа уведомит звуком и завершится\n\r");
     printf("Если не доступен, уведомит звуком и будет работать в фоне, пока сайт/ip не станет доступен\n\r");
     printf("ip_test.comb [ip или адрес сайта] [1] - задаст бесконечную проверку сайта в фоне \n\r");
+    printf("ip_test.comb [ip или адрес сайта] [1]  [10]-  четвёртый аргумент задаст интервал для непрерывной проверки \n\r");
     return 0;
   }
 
@@ -79,7 +86,7 @@ int main(int argc, char * argv[]) {
   /*Проверим доступность ресурса. Переменная initial_state хранит начальное состояние*/
   start(ip_test);
   /*Ожидание события*/
-  wait_event(initial_state, ip_test, inifinite_run);
+  wait_event(initial_state, ip_test, inifinite_run, sleep_interval);
 }
 
 /*ФУНКЦИЯ: Первый запуск*/
@@ -98,9 +105,9 @@ int test(char * ip_test) {
 }
 
 /*ФУНКЦИЯ: результат и оповещение*/
-void wait_event(int initial_state, char * ip_test, char * inifinite_run) {
+void wait_event(int initial_state, char * ip_test, char * inifinite_run, int sleep_interval) {
   while (1) {
-    sleep(5);
+    sleep(sleep_interval);
     test(ip_test);
     /*Если начальное состояние (b) не равно результату проверки ресурса - (test(ip)), - то
     подадим звуковой сигнал и изменим начальное состояние.*/
