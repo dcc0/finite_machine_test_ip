@@ -13,6 +13,8 @@ Email: ivangavr777@gmail.com, dcc0@mail.ru, mol0t@list.ru. 
 
 #include <string.h>
 
+#include <unistd.h>
+
 int main(int argc, char * argv[]) {
   int i = 0;
   /*Переменные основного кода*/
