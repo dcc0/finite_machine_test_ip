@@ -1,10 +1,11 @@
+#!/bin/bash
 #Скрипт при помощи curl проверяет доступность сайта 
 #и уведомляет звуком. By Ivan Gavryushin aka dcc0, MoL0T
 #ivangavr777@gmail.com. MSK. Butovo. 2025
 
 #Тест. Функция
 function test_web  {
-TEST_WEB=`curl -o /dev/null -s -w "%{http_code}\n" $1`
+TEST_WEB=$(curl -o /dev/null -s -w "%{http_code}\n" "$1");
 	case $TEST_WEB in
 	"200")
 return 1;
@@ -28,7 +29,7 @@ function notify {
 }
 
 #Первый запуск
-test_web $1;
+test_web "$1";
 return_val=$?;
 if [[ $return_val =  "1" ]]
 then
@@ -46,7 +47,7 @@ notify $return_val;
 while :
 do
 sleep 120
-test_web $1;
+test_web "$1";
 return_val=$?;
 if [ "$TRIGGER" -ne "$return_val" ]
 then
