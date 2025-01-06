@@ -45,6 +45,7 @@ notify $return_val;
 #Слушаем в цикле
 while :
 do
+sleep 120
 test_web $1;
 return_val=$?;
 if [ "$TRIGGER" -ne "$return_val" ]
