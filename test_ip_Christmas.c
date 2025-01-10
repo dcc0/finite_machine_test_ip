@@ -16,6 +16,69 @@ Email: ivangavr777@gmail.com, dcc0@mail.ru, mol0t@list.ru. 
 
 #include <time.h>
 
+
+/*===ФУНКЦИИ===*/
+
+/*ФУНКЦИЯ: Определение состояния*/
+int test(char * ip_test) {
+  if (system(ip_test) == 0) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+/*ФУНКЦИЯ: Первый запуск*/
+void start(char * ip_test) {
+  if (test(ip_test) == 0)
+    system("beep -f 1200 -l 2000");
+}
+
+
+/*ФУНКЦИЯ: результат и оповещение*/
+void wait_event(int initial_state, char * ip_test, int  inifinite_run, int  sleep_interval) {
+
+/*Добавим дату. Структура с датой*/
+time_t mytime = time(NULL);
+struct tm *now = localtime(&mytime);
+char str_month[20];
+char str_day[20];
+/*Переменные месяца и дня для конвертации в целые*/
+int s_month;
+int s_day;
+/*Форматирование даты: номера месяца и номера дня*/
+strftime(str_month, sizeof(str_month), "%m", now);
+strftime(str_day, sizeof(str_day), "%d", now);
+/*Конвертируем номер дня и месяца в целые*/
+s_day=atoi(str_day);
+s_month=atoi(str_month);
+
+  while (1) {
+    sleep(sleep_interval);
+    test(ip_test);
+    /*Если начальное состояние (b) не равно результату проверки ресурса - (test(ip)), - то
+    подадим звуковой сигнал и изменим начальное состояние.*/
+    if (initial_state != test(ip_test)) {
+      initial_state = test(ip_test);
+      if (test(ip_test) == 1) {
+	/*Проверим не январь ли нынче?! :)*/
+	 if(s_day > 1 && s_day < 20 && s_month == 1) {
+	/*Если январь до 20, то играем эту мелодию*/
+        system("beep -f 523 -l 400;beep -f 880 -l 400;beep -f 880 -l 400;beep -f 783 -l 400;beep -f 880 -l 400;beep -f 698 -l 400;beep -f 523 -l 400;beep -f 523 -l 500;beep -f 523 -l 400;beep -f 880 -l 400;beep -f 880 -l 400;beep -f 932 -l 400;beep -f 783 -l 600;beep -f 1046 -l 600;beep -f 1046 -l 500;beep -f 587 -l 400;beep -f 587 -l 400;beep -f 932 -l 400;beep -f 932 -l 400;beep -f 880 -l 400;beep -f 783 -l 400;beep -f 698 -l 400;beep -f 698 -l 400;beep -f 880 -l 400;beep -f 880 -l 400;beep -f 783 -l 400;beep -f 880 -l 600;beep -f 698 -l 500;");
+	   } else {
+	    system("beep -f 900 -l 500; beep -f 700 -l 1000; beep -f 800 -l 500; beep -f 800 -l 500; beep -f 900 -l 1000;");
+		}
+        printf("CETb ECTb!");
+        /*Проверим не задан ли второй аргумент. Если не задан, то завершим программу*/
+        if (inifinite_run  == 0)
+          break;
+      } else {
+        system("beep -f 1200 -l 2000");
+      }
+    }
+  }
+}
+
 int main(int argc, char * argv[]) {
 /*===ПЕРЕМЕННЫЕ===*/
    /*Переменная i для цикла, в котором находим количество пробелов*/
@@ -101,63 +164,3 @@ int main(int argc, char * argv[]) {
   wait_event(initial_state, ip_test, inifinite_run, sleep_interval);
 }
 
-/*===ФУНКЦИИ===*/
-
-/*ФУНКЦИЯ: Первый запуск*/
-void start(char * ip_test) {
-  if (test(ip_test) == 0)
-    system("beep -f 1200 -l 2000");
-}
-
-/*ФУНКЦИЯ: Определение состояния*/
-int test(char * ip_test) {
-  if (system(ip_test) == 0) {
-    return 1;
-  } else {
-    return 0;
-  }
-}
-
-/*ФУНКЦИЯ: результат и оповещение*/
-void wait_event(int initial_state, char * ip_test, int  inifinite_run, int  sleep_interval) {
-
-/*Добавим дату. Структура с датой*/
-time_t mytime = time(NULL);
-struct tm *now = localtime(&mytime);
-char str_month[20];
-char str_day[20];
-/*Переменные месяца и дня для конвертации в целые*/
-int s_month;
-int s_day;
-/*Форматирование даты: номера месяца и номера дня*/
-strftime(str_month, sizeof(str_month), "%m", now);
-strftime(str_day, sizeof(str_day), "%d", now);
-/*Конвертируем номер дня и месяца в целые*/
-s_day=atoi(str_day);
-s_month=atoi(str_month);
-
-  while (1) {
-    sleep(sleep_interval);
-    test(ip_test);
-    /*Если начальное состояние (b) не равно результату проверки ресурса - (test(ip)), - то
-    подадим звуковой сигнал и изменим начальное состояние.*/
-    if (initial_state != test(ip_test)) {
-      initial_state = test(ip_test);
-      if (test(ip_test) == 1) {
-	/*Проверим не январь ли нынче?! :)*/
-	 if(s_day > 1 && s_day < 20 && s_month == 1) {
-	/*Если январь до 20, то играем эту мелодию*/
-        system("beep -f 523 -l 400;beep -f 880 -l 400;beep -f 880 -l 400;beep -f 783 -l 400;beep -f 880 -l 400;beep -f 698 -l 400;beep -f 523 -l 400;beep -f 523 -l 500;beep -f 523 -l 400;beep -f 880 -l 400;beep -f 880 -l 400;beep -f 932 -l 400;beep -f 783 -l 600;beep -f 1046 -l 600;beep -f 1046 -l 500;beep -f 587 -l 400;beep -f 587 -l 400;beep -f 932 -l 400;beep -f 932 -l 400;beep -f 880 -l 400;beep -f 783 -l 400;beep -f 698 -l 400;beep -f 698 -l 400;beep -f 880 -l 400;beep -f 880 -l 400;beep -f 783 -l 400;beep -f 880 -l 600;beep -f 698 -l 500;");
-	   } else {
-	    system("beep -f 900 -l 500; beep -f 700 -l 1000; beep -f 800 -l 500; beep -f 800 -l 500; beep -f 900 -l 1000;");
-		}
-        printf("CETb ECTb!");
-        /*Проверим не задан ли второй аргумент. Если не задан, то завершим программу*/
-        if (inifinite_run  == 0)
-          break;
-      } else {
-        system("beep -f 1200 -l 2000");
-      }
-    }
-  }
-}
